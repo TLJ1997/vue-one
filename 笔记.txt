@@ -1,0 +1,30 @@
+项目创建过程：
+
+
+第十一个视频：
+1.修改main.js 和App.vue文件中的代码，删除router.js中的路由和引入的html模块，删除view文件夹，去掉默认页面，便于我们开始开发
+
+2.在components文件夹里新建Login.vue文件  Login.vue是一个单文件组件，由结构，样式，行为三部分组成
+
+3.在router.js文件中添加login路由，并设置路由重定向
+
+4.在Login.vue中写结构，样式   并在创建global.css文件，写全局样式  global.css创建成功后要在main.js中导入后才能生效。
+
+5.创建白色盒子  并设置1其水平垂直居中对齐 插入头像图片 设置位置
+ 
+6.引入element组件，生成登录输入框 element组件 引入后要在element.js中按需导入相应的组件，并注册为全局组件
+
+7.添加字体图标 已步入第三方阿里图标库 复制文件夹 在main.js中引入css文件 在login.vue文件中给input添加字体图标所带的样式名
+
+8.用v-model给用户输入框和密码框绑定值  并拷贝element方法添加校验
+
+9.设置重置事件，设置登录事件  都是调用element方法  在登录成功发起请求前要配置axios包，并把它挂载到全局
+
+10.判断登陆请求 发送请求用axios  用element中的message弹框消息组件实现登录提示 失败或成功
+
+11.把登录成功后的 token(令牌)， 保存到客户端的 sessionStorage 中  并通过编程式导航跳转到后台页面,创建 home后台首页，并在router.js文件中导入home路由
+
+12. 设置路由导航守卫 to将要访问的路径  from代表从哪个路径跳转来的 next是一个函数，表示放行 next（）放行 next（‘/login’）强制跳转
+ 
+13。 在home.vue文件中设置退出按钮  先调用window方法清除token 在用编程式导航跳转到登录页
+ 
