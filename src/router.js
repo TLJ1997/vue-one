@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './components/Login.vue'
 import Home from './components/Home.vue'
+import Welcome from './components/Welcome.vue'
+import User from './components/user/User.vue'
+// import Role from './components/user/Role.vue'
 
 Vue.use(Router)
 
@@ -11,7 +14,12 @@ const router =  new Router({
     {path:'/',redirect:'/login'},
     // 用户访问'/login'路由是返回Login组件
     {path:'/login',component:Login},
-    {path:'/home',component:Home}
+    {path:'/home',component:Home,
+    redirect:'/welcome',
+    children:[
+      {path:'/welcome',component:Welcome},
+      {path:'/users',component:User}
+    ]}
   ]
 })
 // 挂载路由守卫
@@ -26,5 +34,5 @@ router.beforeEach((to, from, next )=>{
   next()
 })
 
-// 暴露router路由
+// // 暴露router路由
 export default router

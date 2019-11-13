@@ -14,8 +14,9 @@
             <el-input prefix-icon="iconfont icon-user" v-model="loginForm.username"></el-input>
             </el-form-item>
             <!-- 密码 -->
-            <el-form-item prop="password">
-            <el-input prefix-icon="iconfont icon-3702mima" v-model="loginForm.password" type="password"></el-input>
+            <el-form-item prop="password" >
+            <el-input prefix-icon="iconfont icon-3702mima" v-model="loginForm.password" type="password"  ></el-input>
+            <!-- v-on="$listeners" @keyup.enter="login" -->
             </el-form-item>
             <!-- 按钮 -->
             <el-form-item class="btns">
@@ -59,10 +60,11 @@ export default {
             this.$refs.loginFormRef.resetFields();
         },
         login(){
+          
+          
             // 这个方法是从 element中粘贴的 valid返回true或false  表单校验成功是返回true
-
             this.$refs.loginFormRef.validate(async valid=>{
-                // alert(valid)
+                
                 if(!valid) return;
                 // axios 发送请求  post请求方法 login请求地址 this.logForm请求参数
                 const {data: res} =await this.$http.post('login',this.loginForm);
@@ -72,14 +74,44 @@ export default {
                 // 把登录成功后的 token(令牌)， 保存到客户端的 sessionStorage 中
                 window.sessionStorage.setItem("token",res.data.token);
                 // 通过编程式导航跳转到后台页面
-                this.$router.push("/home");
-
-                
+                this.$router.push("/home");   
             });
         }
     }
-
 }
+
+// Vue.component('el-input', {
+//   inheritAttrs: false,
+//   props: ['label', 'value'],
+//   computed: {
+//     inputListeners: function () {
+//       var vm = this
+//       // `Object.assign` 将所有的对象合并为一个新对象
+//       return Object.assign({},
+//         // 我们从父级添加所有的监听器
+//         this.$listeners,
+//         // 然后我们添加自定义监听器，
+//         // 或覆写一些监听器的行为
+//         {
+//           // 这里确保组件配合 `v-model` 的工作
+//           input: function (event) {
+//             vm.$emit('input', event.target.value)
+//           }
+//         }
+//       )
+//     }
+//   },
+//   template: `
+//     <label>
+//       {{ label }}
+//       <input
+//         v-bind="$attrs"
+//         v-bind:value="value"
+//         v-on="inputListeners"
+//       >
+//     </label>
+//   `
+// })
 </script>
 
 <style lang="less" scoped>
