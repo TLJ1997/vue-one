@@ -32,7 +32,12 @@ import{
     Pagination,
     Dialog,
     MessageBox,
-    Tag
+    Tag,
+    Alert,
+    Cascader,
+    Tree,
+    Timeline,
+    TimelineItem
 
 } from 'element-ui'
 // 注册为全局组件
@@ -59,6 +64,12 @@ Vue.use(Tooltip)
 Vue.use(Pagination)
 Vue.use(Dialog)
 Vue.use(Tag)
+Vue.use(Alert)
+Vue.use(Cascader)
+Vue.use(Tree)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
+
 
 
 Vue.prototype.$message = Message

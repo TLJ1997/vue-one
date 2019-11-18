@@ -6,7 +6,9 @@ import Welcome from './components/Welcome.vue'
 import User from './components/user/User.vue'
 import Right from './components/power/rights.vue'
 import Roles from './components/power/Roles.vue'
-
+import Cate from './components/goods/Cate.vue'
+import Params from './components/goods/Params.vue'
+import Order from './components/order/Order.vue'
 
 Vue.use(Router)
 
@@ -22,7 +24,10 @@ const router =  new Router({
       {path:'/welcome',component:Welcome},
       {path:'/users',component:User},
       {path:'/rights',component:Right},
-      {path:'/roles',component:Roles}
+      {path:'/roles',component:Roles},
+      {path:'/categories',component:Cate},
+      {path:'/params',component:Params},
+      {path:'/orders',component:Order},
     ]}
   ]
 })
