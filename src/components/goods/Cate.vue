@@ -243,5 +243,7 @@ export default {
 .treeTable{
     margin-top:15px;
 }
-
+.el-cascader{
+  width 100%;
+}
 </style>
