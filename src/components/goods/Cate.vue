@@ -50,10 +50,18 @@
         </template>
         <!-- 操作模板 -->
         <template slot="opt" slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" size="mini"
+          <el-button
+            type="primary"
+            icon="el-icon-edit"
+            size="mini"
+            @click="changeCateDialog = true"
             >编辑</el-button
           >
-          <el-button type="danger" icon="el-icon-delete" size="mini"
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            @click="deleteCate(scope.row.cat_id)"
             >删除</el-button
           >
         </template>
@@ -75,6 +83,7 @@
       title="添加分类"
       :visible.sync="addCatDdialogVisible"
       width="50%"
+      @close="addCateDdialogClosed"
     >
       <el-form
         :model="addCateForm"
@@ -93,14 +102,28 @@
             :props="cascaderProps"
             v-model="selectedKeys"
             @change="parentCateChanged"
+            clearable
+            change-on-select
           >
           </el-cascader>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="addCatDdialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="addCatDdialogVisible = false"
-          >确定</el-button
+        <el-button type="primary" @click="addCate">确定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 修改分类对话框 -->
+    <el-dialog
+      title="提示"
+      :visible.sync="changeCateDialog"
+      width="50%"
+    >
+      <span>这是一段信息</span>
+      <span >
+        <el-button @click="changeCateDialog = false">取 消</el-button>
+        <el-button type="primary" @click="changeCateDialog = false"
+          >确 定</el-button
         >
       </span>
     </el-dialog>
@@ -176,15 +199,13 @@ export default {
       parentCatelist: [],
       // 指定级联选择器的配置对象
       cascaderProps: {
-      value:'cat_id',
-      label:'cat_name',
-      children:'children'
+        value: 'cat_id',
+        label: 'cat_name',
+        children: 'children'
       },
       // 选中的父级分类的id数组
-      selectedKeys:[]
+      selectedKeys: []
     }
-    
-   
   },
   created() {
     this.getCateList()
@@ -232,8 +253,66 @@ export default {
       this.parentCatelist = res.data
     },
     //选择项发生变化触发此函数
-    parentCateChanged(){
-
+    parentCateChanged() {
+      if (thi.selectedKeys.length > 0) {
+        //  父级分类的id
+        this.addCateForm.cat_pid = this.selectedKeys[
+          this.selectedKeys.length - 1
+        ]
+        // 为当前分类的等级赋值
+        this.addCateForm.cat_level = this.selectedKeys.length
+        return
+      } else {
+        this.addCateForm.cat_pid = 0
+        this.addCateForm.cat_level = 0
+      }
+    },
+    // 点击添加分类的确定按钮事件
+    addCate() {
+      // console.log(this.addCateForm);
+      this.$refs.addCateFormRef.validate(async valid => {
+        if (!valid) return
+        const { data: res } = await this.$http.post(
+          'categories',
+          this.addCateForm
+        )
+        if (res.meta.status !== 201) {
+          return this.$message.error('添加失败')
+        }
+        this.$message.success('添加分类成功')
+        this.addCatDdialogVisible = false
+        this.getCateList()
+      })
+    },
+    // 表单重置事件
+    addCateDdialogClosed() {
+      // 找到表单的引用对象 添加resetFields()表单重置事件
+      this.$refs.addCateFormRef.resetFields()
+      this.selectedKeys = []
+      this.addCateForm.cat_level = 0
+      this.addCateForm.cat_pid = 0
+    },
+    // 删除分类
+    async deleteCate(id) {
+      // console.log(123);
+      const confirmResult = await this.$confirm(
+        '此操作将永久删除该文件, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).catch(err => err)
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已取消删除')
+      }
+      const { data: res } = await this.$http.delete('categories/' + id)
+      if (res.meta.status !== 200) {
+        return this.$message.error('删除用户失败')
+      }
+      this.$message.success('删除用户成功')
+      this.getCateList()
     }
   }
 }
