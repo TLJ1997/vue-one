@@ -37,7 +37,9 @@ import{
     Cascader,
     Tree,
     Timeline,
-    TimelineItem
+    TimelineItem,
+    Tabs,
+    TabPane
 
 } from 'element-ui'
 // 注册为全局组件
@@ -69,6 +71,8 @@ Vue.use(Cascader)
 Vue.use(Tree)
 Vue.use(Timeline)
 Vue.use(TimelineItem)
+Vue.use(TabPane)
+Vue.use(Tabs)
 
 
 

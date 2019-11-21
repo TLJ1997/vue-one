@@ -122,6 +122,55 @@
 
 15.给表格添加边框线 间距  渲染二级权限，三级权限  美化：给html添加最小宽度，给各级权限表格设置居中对齐 
 
+商品参数页面：
+1.添加params.vue页面
+
+2.用el-alert组件渲染首行的提示信息
+
+3.用el-row 和 el-col包裹span和级联选择框 让他们处于一行  通过判断this.selectedCateKeys.length !==3 限制用户只能选择第三级分类
+
+4.用el-tabs组件渲染动态参数和静态属性这两个页签，添加计算属性computed，通过判断this.selectedCateKeys.length !==3 来返回true或false，并动态绑定到el-tabs中来决定按钮的禁用状态
+
+5.创建获取参数列表getparamsData函数 选中的是三级分类后  根据所选择分类的id 和当前所处的面板 获取对应的请求参数，发送请求，获取参数列表，并分别在级联选择框值改变的函数 和 面板按钮改变的函数里 调用此函数
+
+6.添加动态和静态的form表单 把数据渲染到页面中
+
+7.验证 发送请求 刷新列表
+    addParams(){
+      this.$refs.addFormRef.validate(async valid=>{
+        if(!valid) return
+
+        const {data:res} = await this.$http.post(`categories/${this.cateId}/attributes`,{
+          attr_name:this.addForm.attr_name,
+          attr_sel:this.activeName
+        })
+        if(res.meta.status !==201){
+          return this.$message.error('添加失败')
+        }
+        this.addDialogVisible = false
+        this.getParamsList()
+      })
+    }
+
+8.用for-each循环和作用域插槽添加参数标签
+
+9.用Tag动态编辑标签添加 添加参数标签的按钮
+ // 点击参加参数按钮事件
+    showInput(row) {
+      // 这个要放在this.$nextTick前面，否则this.$nextTick不起作用
+      row.inputVisible = true
+      // 切换为文本框是自动获取焦点  this.$nextTick这个事件会在页面被重新渲染时触发
+      this.$nextTick(_ => {
+        // this.$refs.saveTagInput.$refs.input 获取到这个input框
+        this.$refs.saveTagInput.$refs.input.focus()
+      });
+      
+      row.inputValue = ''
+    }
+
+10.添加参数 发送请求 把添加的参数保留到数据库中  
+
+11.删除参数 发送请求 把删除参数购的状态保留到数据库中  
 
 表单重置方法： 
 1.找到表单的引用对象 this.$refs.addCateFormRef   即ref后缀的名称
@@ -134,7 +183,7 @@
 
 2.添加确定删除弹框 在确定后发送删除请求，检测是否删除成功，成功后调用函数刷新列表
 
-修改方法：
+
 
 第四天：
 1.创建Cate.vue文件，添加路由 挂载到全局
