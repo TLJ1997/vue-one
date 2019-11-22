@@ -39,7 +39,10 @@ import{
     Timeline,
     TimelineItem,
     Tabs,
-    TabPane
+    TabPane,
+    Step,
+    Steps,
+    Upload
 
 } from 'element-ui'
 // 注册为全局组件
@@ -73,6 +76,9 @@ Vue.use(Timeline)
 Vue.use(TimelineItem)
 Vue.use(TabPane)
 Vue.use(Tabs)
+Vue.use(Step)
+Vue.use(Steps)
+Vue.use(Upload)
 
 
 
